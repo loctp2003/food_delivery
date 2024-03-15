@@ -2,7 +2,9 @@ package restaurentstorage
 
 import (
 	"context"
+	"food/common"
 	"food/module/restaurant/restaurantmodel"
+	"gorm.io/gorm"
 )
 
 func (s *sqlStore) FinDataByCondition(
@@ -20,7 +22,10 @@ func (s *sqlStore) FinDataByCondition(
 
 	if err := db.Where(condition).
 		First(&result).Error; err != nil {
-		return nil, err
+		if err == gorm.ErrRecordNotFound {
+			return nil, common.RecordNotFound
+		}
+		return nil, common.ErrDB(err)
 	}
 
 	return &result, nil

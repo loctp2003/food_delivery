@@ -2,7 +2,7 @@ package ginrestaurant
 
 import (
 	"food/common"
-	"food/component/appcontext"
+	"food/component"
 	"food/module/restaurant/restaurantbusines"
 	"food/module/restaurant/restaurentstorage"
 	"github.com/gin-gonic/gin"
@@ -10,15 +10,12 @@ import (
 	"strconv"
 )
 
-func GetRestaurant(appCtx appcontext.AppContext) gin.HandlerFunc {
+func GetRestaurant(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
-		if err != nil {
-			c.JSON(401, gin.H{
-				"error": err.Error(),
-			})
 
-			return
+		if err != nil {
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		store := restaurentstorage.NewSQLStore(appCtx.GetMainDBConnection())
@@ -27,11 +24,7 @@ func GetRestaurant(appCtx appcontext.AppContext) gin.HandlerFunc {
 		data, err := biz.GetRestaurant(c.Request.Context(), id)
 
 		if err != nil {
-			c.JSON(401, map[string]interface{}{
-				"error": err.Error(),
-			})
-
-			return
+			panic(err)
 		}
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))

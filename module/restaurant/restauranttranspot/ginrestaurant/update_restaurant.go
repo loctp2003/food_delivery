@@ -2,7 +2,7 @@ package ginrestaurant
 
 import (
 	"food/common"
-	"food/component/appcontext"
+	"food/component"
 	"food/module/restaurant/restaurantbusines"
 	"food/module/restaurant/restaurantmodel"
 	"food/module/restaurant/restaurentstorage"
@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-func UpdateRestaurant(appCtx appcontext.AppContext) gin.HandlerFunc {
+func UpdateRestaurant(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {

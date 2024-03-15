@@ -2,7 +2,7 @@ package ginrestaurant
 
 import (
 	"food/common"
-	"food/component/appcontext"
+	"food/component"
 	"food/module/restaurant/restaurantbusines"
 	"food/module/restaurant/restaurantmodel"
 	"food/module/restaurant/restaurentstorage"
@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func ListRestaurant(appCtx appcontext.AppContext) gin.HandlerFunc {
+func ListRestaurant(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var filter restaurantmodel.Filter
 		if err := c.ShouldBind(&filter); err != nil {

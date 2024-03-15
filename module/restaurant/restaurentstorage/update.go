@@ -2,6 +2,7 @@ package restaurentstorage
 
 import (
 	"context"
+	"food/common"
 	"food/module/restaurant/restaurantmodel"
 )
 
@@ -12,7 +13,7 @@ func (s *sqlStore) UpdateData(
 ) error {
 	db := s.db
 	if err := db.Where("id = ?", id).Updates(data).Error; err != nil {
-		return err
+		return common.ErrDB(err)
 	}
 	return nil
 }
